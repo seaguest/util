@@ -20,12 +20,12 @@ func Validate(imei string) bool
 ~~~ go
 func Contains(list interface{}, e interface{}) bool
 ~~~
- Difference returns a slice of values that are only present in one of the input slices
+ Contains check if list contains an element.
 
 ~~~ go
 // EXAMPLE
 var list = []int{1, 1, 2, 3}
-var e int 1
+var e int = 1
 
 ok := Contains(list, e)
 fmt.Println(ok) // true
@@ -35,26 +35,30 @@ fmt.Println(ok) // true
 ~~~ go
 func FieldSlice(list interface{}, field string) (reflect.Value, bool)
 ~~~
- FieldSlice returns a slice extracted specifed field from slice.
+ FieldSlice returns a slice extracted by specifed field from slice.
 
 [1, 2, 2, 4, 6] & [2, 4, 5] >> [1, 5, 6]
 
 [1, 1, 3, 4, 5, 6] >> [1, 3, 4, 5, 6]
 ~~~ go
 // EXAMPLE
-var a = []int{1, 1, 2, 3}
-var b = []int{2, 4}
-
-z, ok := Difference(a, b)
-if !ok {
-    fmt.Println("Cannot find difference")
+type user struct{
+    Name string
+    Age uint32
 }
 
-slice, ok := z.Interface().([]int)
+var users = []*user{&user{Name:"hello", Age:31}}
+
+z, ok := FieldSlice(users, "Name")
+if !ok {
+    fmt.Println("Cannot find field")
+}
+
+slice, ok := z.Interface().([]string)
 if !ok {
     fmt.Println("Cannot convert to slice")
 }
-fmt.Println(slice, reflect.TypeOf(slice)) // [1, 3, 4] []int
+fmt.Println(slice, reflect.TypeOf(slice)) // ["hello"] []string
 ~~~
 
 ### [Difference](https://godoc.org/github.com/seaguest/util#Difference)
@@ -177,6 +181,20 @@ func ParseTime(ts interface{}) time.Time
 func FormatTime(ts interface{}) string
 ~~~
  FormatTime format string to 2006-01-02 15:04:05 format
+
+
+## crypto
+### [AESBase64Encrypt](https://godoc.org/github.com/seaguest/util#AESBase64Encrypt)
+~~~ go
+func AESBase64Encrypt(clear, key, iv string) (encryoted string, err error)
+~~~
+ AESBase64Encrypt encrypt clear data with key and iv.
+
+### [AESBase64Decrypt](https://godoc.org/github.com/seaguest/util#AESBase64Decrypt)
+~~~ go
+func AESBase64Decrypt(encrypted, key, iv string) (clear string, err error)
+~~~
+ AESBase64Decrypt decrypt encrypted data with key and iv.
 
 ## License
 MIT
